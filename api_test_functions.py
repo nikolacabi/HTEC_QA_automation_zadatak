@@ -69,7 +69,6 @@ def api_add_technologies(token, tech_title):
         'content-type': "application/json;charset=utf-8",
         'content-length': str(23 + len(tech_title)),
         'cache-control': "no-cache",
-        'postman-token': "6315b652-7f29-4370-9179-75d3f91c2d18"
         }
     
     response = requests.request("POST", url, data=payload, headers=headers)
@@ -91,7 +90,6 @@ def api_delete_all_technologies(token):
         headers = {
             'authorization': "Bearer " + token,
             'cache-control': "no-cache",
-            'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
             }
         
         response = requests.request("DELETE", url, headers=headers)
@@ -104,7 +102,6 @@ def api_delete_technologies(token, tech_id):
     headers = {
         'authorization': "Bearer " + token,
         'cache-control': "no-cache",
-        'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
         }
     
     response = requests.request("DELETE", url, headers=headers)
@@ -112,6 +109,23 @@ def api_delete_technologies(token, tech_id):
     #print(response.text)
     return response
 
+
+def api_change_technologies(token, tech_id, tech_title):
+    
+    url = "https://qa-sandbox.apps.htec.rs/api/technologies/technology/" + str(tech_id)
+    
+    payload = "{\"technology_title\":\"" + tech_title + "\"}"
+    headers = {
+        'authorization': "Bearer " + token,
+        'content-type': "application/json;charset=utf-8",
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("PUT", url, data=payload, headers=headers)
+    
+    #print(response.text)
+    return response
+    
 
 # =============================================================================
 # SENIORITIES
@@ -123,7 +137,6 @@ def api_get_all_seniorities(token):
     headers = {
         'authorization': "Bearer " + token,
         'cache-control': "no-cache",
-        'postman-token': "42cda08a-89bd-f7b7-6eb1-f197be8d510f"
         }
     
     response = requests.request("GET", url, headers=headers)
@@ -143,7 +156,6 @@ def api_add_seniorities(token, sen_title):
         'content-type': "application/json;charset=utf-8",
         'content-length': str(22 + len(sen_title)),
         'cache-control': "no-cache",
-        'postman-token': "6315b652-7f29-4370-9179-75d3f91c2d18"
         }
     
     response = requests.request("POST", url, data=payload, headers=headers)
@@ -178,10 +190,26 @@ def api_delete_seniorities(token, sen_id):
     headers = {
         'authorization': "Bearer " + token,
         'cache-control': "no-cache",
-        'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
         }
     
     response = requests.request("DELETE", url, headers=headers)
+    
+    #print(response.text)
+    return response
+
+
+def api_change_seniorities(token, sen_id, sen_title):
+    
+    url = "https://qa-sandbox.apps.htec.rs/api/seniorities/seniority/" + str(sen_id)
+    
+    payload = "{\"seniority_title\":\"" + sen_title + "\"}"
+    headers = {
+        'authorization': "Bearer " + token,
+        'content-type': "application/json;charset=utf-8",
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("PUT", url, data=payload, headers=headers)
     
     #print(response.text)
     return response
@@ -197,7 +225,6 @@ def api_get_all_teams(token):
     headers = {
         'authorization': "Bearer " + token,
         'cache-control': "no-cache",
-        'postman-token': "42cda08a-89bd-f7b7-6eb1-f197be8d510f"
         }
     
     response = requests.request("GET", url, headers=headers)
@@ -217,7 +244,6 @@ def api_add_teams(token, team_title):
         'content-type': "application/json;charset=utf-8",
         'content-length': str(16 + len(team_title)),
         'cache-control': "no-cache",
-        'postman-token': "6315b652-7f29-4370-9179-75d3f91c2d18"
         }
     
     response = requests.request("POST", url, data=payload, headers=headers)
@@ -239,7 +265,6 @@ def api_delete_all_teams(token):
         headers = {
             'authorization': "Bearer " + token,
             'cache-control': "no-cache",
-            'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
             }
         
         response = requests.request("DELETE", url, headers=headers)
@@ -252,10 +277,26 @@ def api_delete_teams(token, team_id):
     headers = {
         'authorization': "Bearer " + token,
         'cache-control': "no-cache",
-        'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
         }
     
     response = requests.request("DELETE", url, headers=headers)
+    
+    #print(response.text)
+    return response
+
+
+def api_change_teams(token, team_id, team_title):
+    
+    url = "https://qa-sandbox.apps.htec.rs/api/roles/role/" + str(team_id)
+    
+    payload = "{\"role_name\":\"" + team_title + "\"}"
+    headers = {
+        'authorization': "Bearer " + token,
+        'content-type': "application/json;charset=utf-8",
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("PUT", url, data=payload, headers=headers)
     
     #print(response.text)
     return response
@@ -280,36 +321,35 @@ def api_get_all_people(token):
     return response    
 
 
-def api_add_people(token, name, sen='', technologies=[], role=''):
+def api_add_people(token, people_name, sen='', technologies=[], role=''):
     
     url = "https://qa-sandbox.apps.htec.rs/api/people/person"
     
     if sen=='' and role=='':
-        payload = "{\"people_name\":\"" + name + "\",\"technologies\":" + str(technologies) + "}"
+        payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + "}"
         req_len = len(name) + len(str(technologies)) + 39
         
     elif sen=='' and role!='':
         
-        payload = "{\"people_name\":\"" + name + "\",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}" 
+        payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}" 
         req_len = len(name) + len(str(technologies)) + 53
     
     elif sen!='' and role=='':
         
-        payload = "{\"people_name\":\"" + name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + "}"      
+        payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + "}"      
         req_len = len(name) + len(str(technologies)) + 58
                 
     else:
         
-        payload = "{\"people_name\":\"" + str(name) + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}"
+        payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}"
         req_len = len(name) + len(str(technologies)) + 73
                 
     headers = {
         'accept': "application/json, text/plain, */*",
         'authorization': "Bearer " + token,
         'content-type': "application/json;charset=utf-8",
-        'content-length': str(16 + req_len),
+        #'content-length': str(16 + req_len),
         'cache-control': "no-cache",
-        'postman-token': "6315b652-7f29-4370-9179-75d3f91c2d18"
         }
     
     response = requests.request("POST", url, data=payload, headers=headers)
@@ -331,34 +371,150 @@ def api_delete_all_people(token):
         headers = {
             'authorization': "Bearer " + token,
             'cache-control': "no-cache",
-            'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
             }
         
         response = requests.request("DELETE", url, headers=headers)
 
 
 def api_delete_peolpe(token, people_id):
-    
+           
     url = "https://qa-sandbox.apps.htec.rs/api/people/person/" + str(people_id)
     
     headers = {
         'authorization': "Bearer " + token,
         'cache-control': "no-cache",
-        'postman-token': "b7c9ef89-2743-6c02-45b4-284752b69ecc"
         }
     
     response = requests.request("DELETE", url, headers=headers)
     
     #print(response.text)
     return response
+   
+    
+def api_change_people(token, people_id, people_name, sen='', technologies=[], role=''):
+    
+    url = "https://qa-sandbox.apps.htec.rs/api/people/person/" + str(people_id)
+    
+    if sen=='' and role=='':
+        payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + "}"
+        req_len = len(name) + len(str(technologies)) + 39
+        
+    elif sen=='' and role!='':
+        
+        payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}" 
+        req_len = len(name) + len(str(technologies)) + 53
+    
+    elif sen!='' and role=='':
+        
+        payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + "}"      
+        req_len = len(name) + len(str(technologies)) + 58
+                
+    else:
+        
+        payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}"
+        req_len = len(name) + len(str(technologies)) + 73
+                
+    headers = {
+        'accept': "application/json, text/plain, */*",
+        'authorization': "Bearer " + token,
+        'content-type': "application/json;charset=utf-8",
+        'content-length': str(16 + req_len),
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("PUT", url, data=payload, headers=headers)
+    
+    #print(response.text)
+    return response   
+    
+ 
+# =============================================================================
+# PROJECTS
+# =============================================================================
+def api_get_all_projects(token):
+    
+    url = "https://qa-sandbox.apps.htec.rs/api/projects/all"
+    
+    headers = {
+        'authorization': "Bearer " + token,
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("GET", url, headers=headers)
+    
+    #print(response.text)
+    return response    
 
 
+def api_add_projects(token, project_title, people=[]):
+
+    url = "https://qa-sandbox.apps.htec.rs/api/projects/project"
+
+    payload = "{\"project_title\":\"" + project_title + "\",\"people\":" + str(people) + "}"
+    headers = {
+        'authorization': "Bearer " + token,
+        'content-type': "application/json;charset=utf-8",
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("POST", url, data=payload, headers=headers)
+    
+    #print(response.text)
+    return response   
 
 
+def api_change_projects(token, project_id, project_title, people=[]):
+
+    url = "https://qa-sandbox.apps.htec.rs/api/projects/project/" + str(project_id)
+
+    payload = "{\"project_title\":\"" + project_title + "\",\"people\":" + str(people) + "}"
+    headers = {
+        'authorization': "Bearer " + token,
+        'content-type': "application/json;charset=utf-8",
+        'cache-control': "no-cache",
+        }
+    
+    try:
+        response = requests.request("PUT", url, data=payload, headers=headers)
+        
+        #print(response.text)
+        return response   
+    
+    except:
+        pass
 
 
+def api_delete_all_projects(token):
+    
+    all_projects = json.loads(api_get_all_projects(token).text)
+    
+    for i in range(0, len(all_projects)):
+        
+        project_id = all_projects[i]["project_id"]
+        
+        url = "https://qa-sandbox.apps.htec.rs/api/projects/project/" + str(project_id)
+        
+        headers = {
+            'authorization': "Bearer " + token,
+            'cache-control': "no-cache",
+            }
+        
+        response = requests.request("DELETE", url, headers=headers)
 
 
+def api_delete_projects(token, project_id):
+           
+    url = "https://qa-sandbox.apps.htec.rs/api/projects/project/" + str(project_id)
+    
+    headers = {
+        'authorization': "Bearer " + token,
+        'cache-control': "no-cache",
+        }
+    
+    response = requests.request("DELETE", url, headers=headers)
+    
+    #print(response.text)
+    return response
 
 
 
