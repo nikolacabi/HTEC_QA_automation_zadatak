@@ -8,9 +8,7 @@ Created on Tue Jan  5 23:39:50 2021
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
@@ -47,12 +45,15 @@ def ui_check_login():
         
         if firefox.current_url == 'https://qa-sandbox.apps.htec.rs/dashboard':
             print('Check login - PASSED')
+            return 'PASSED'
             
         else:
             print('Check login - FAILED')
+            return "FAILED"
             
     except:
         print("Login cant be verifed")
+        return "ERROR"
     
     
 def ui_check_improper_login():
@@ -63,14 +64,17 @@ def ui_check_improper_login():
     try:      
         if firefox.current_url == 'https://qa-sandbox.apps.htec.rs/login' and firefox.find_element_by_xpath(USER_NOT_FOUND_XPATH).is_displayed():
             print('Check login user not found - PASSED')
+            return 'PASSED'
     except:
         pass
             
     try:        
         if firefox.current_url == 'https://qa-sandbox.apps.htec.rs/login' and firefox.find_element_by_xpath(PASSWORD_INCORRECT_XPATH).is_displayed():  
             print('Check login incorrect password - PASSED')
+            return 'PASSED'
+            
     except:
-        pass     
+        return 'ERROR' 
                     
 
 def ui_add_use_case(uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, uc_step_count, uc_step_txt):
@@ -79,6 +83,7 @@ def ui_add_use_case(uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, uc_step_coun
         
         URL = "https://qa-sandbox.apps.htec.rs/use-cases"
         firefox.get(URL)
+        time.sleep(2)
         
         CREATE_UC_XPATH = '/html/body/div/div/div[2]/div/a[2]'
         element = wait.until(EC.element_to_be_clickable((By.XPATH, CREATE_UC_XPATH)))
@@ -95,12 +100,16 @@ def ui_add_use_case(uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, uc_step_coun
         UC_EXP_XPATH = "/html/body/div/div/div[2]/div/div/div/form/div[3]/input"
         inputElement = firefox.find_element_by_xpath(UC_EXP_XPATH)
         inputElement.send_keys(uc_exp_txt)
-        
-        if uc_auto:
-            UC_AUTOMATED_XPATH = '/html/body/div/div/div[2]/div/div/div/form/div[4]/div/div/label'
-            element = wait.until(EC.element_to_be_clickable((By.XPATH, UC_AUTOMATED_XPATH)))
+                
+        UC_AUTOMATED_XPATH_SW = '//*[@id="switch"]'
+        UC_AUTOMATED_XPATH_LBL = '/html/body/div/div/div[2]/div/div/div/form/div[4]/div/div/label'
+        checkElement = firefox.find_element_by_xpath(UC_AUTOMATED_XPATH_SW)
+        if uc_auto == 'true' and checkElement.get_attribute('value') == "false":
+            element = wait.until(EC.element_to_be_clickable((By.XPATH, UC_AUTOMATED_XPATH_LBL)))
             element.click()
-
+        elif uc_auto == 'false' and checkElement.get_attribute('value') == "true":
+            element = wait.until(EC.element_to_be_clickable((By.XPATH, UC_AUTOMATED_XPATH_LBL)))
+            element.click()                      
                 
         UC_STEP_CSS = '.col-xl-12 > form:nth-child(1) > div:nth-child(11) > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)'
         inputElement = firefox.find_element_by_css_selector(UC_STEP_CSS)
@@ -129,10 +138,13 @@ def ui_add_use_case(uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, uc_step_coun
         
 def ui_check_use_case(pos, tot, uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, uc_step_count, uc_step_txt):
     
+    result = []
+    
     try:
         
         URL = "https://qa-sandbox.apps.htec.rs/use-cases"
         firefox.get(URL)
+        time.sleep(2)
         
         if tot == 1:
             uc_xpath = '/html/body/div/div/div[2]/div/div/a'
@@ -143,8 +155,10 @@ def ui_check_use_case(pos, tot, uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, 
         checkElement = firefox.find_element_by_xpath(uc_xpath)
         if checkElement.text == uc_title_txt:
             print('Check Title outside - PASSED')
+            result.append('Check Title outside - PASSED')
         else:
             print('Check Title outside - FAILED')
+            result.append('Check Title outside - FAILED')
                                      
         element = firefox.find_element_by_xpath(uc_xpath)
         element.click()
@@ -154,19 +168,21 @@ def ui_check_use_case(pos, tot, uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, 
         checkElement = firefox.find_element_by_xpath(UC_TITLE_XPATH)
         if checkElement.get_attribute('value') == uc_title_txt:
             print('Check Title inside - PASSED')
+            result.append('Check Title inside - PASSED')
         else:
             print('Check Title inside - FAILED')
-            print(checkElement.get_attribute('value'))
-
+            result.append('Check Title inside - FAILED')
+            
         
         UC_DESC_XPATH = "/html/body/div/div/div[2]/div/div/div/form/div[2]/textarea"
         element = wait.until(EC.element_to_be_clickable((By.XPATH, UC_DESC_XPATH)))
         checkElement = firefox.find_element_by_xpath(UC_DESC_XPATH)
         if checkElement.get_attribute('value') == uc_desc_txt:
             print('Check Description  - PASSED')
+            result.append('Check Description  - PASSED')
         else:
             print('Check Description - FAILED')
-            print(checkElement.get_attribute('value'))
+            result.append('Check Description - FAILED')
         
         
         UC_EXP_XPATH = "/html/body/div/div/div[2]/div/div/div/form/div[3]/input"
@@ -174,41 +190,47 @@ def ui_check_use_case(pos, tot, uc_title_txt, uc_desc_txt, uc_exp_txt, uc_auto, 
         checkElement = firefox.find_element_by_xpath(UC_EXP_XPATH)
         if checkElement.get_attribute('value') == uc_exp_txt:
             print('Check Expected - PASSED')
+            result.append('Check Expected - PASSED')
         else:
             print('Check Expected - FAILED')
-            print(checkElement.get_attribute('value'))
+            result.append('Check Expected - FAILED')
             
         
         UC_AUTOMATED_XPATH = '//*[@id="switch"]'
         checkElement = firefox.find_element_by_xpath(UC_AUTOMATED_XPATH)
         if checkElement.get_attribute('value') == uc_auto:
             print('Check Automated? - PASSED')
+            result.append('Check Automated? - PASSED')
         else:
             print('Check Automated? - FAILED')
-            print(checkElement.get_attribute('value'))
+            result.append('Check Automated? - FAILED')
             
-        
         for i in range (0, uc_step_count):
-                           
+                                  
             step_css = '.col-xl-12 > form:nth-child(1) > div:nth-child(' + str(12 + i) + ') > div:nth-child(1) > div:nth-child(1) > input:nth-child(1)'
             element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, step_css)))
             checkElement = firefox.find_element_by_css_selector(step_css)
+            
             if checkElement.get_attribute('value') == uc_step_txt[i]:
                 print('Check Step', i+1, ' - PASSED')
+                result.append('Check Step ' + str(i+1) + ' - PASSED')
             else:
                 print('Check Step', i+1, ' - FAILED')
-                print(checkElement.get_attribute('value'))
-                                   
+                result.append('Check Step ' + str(i+1) + ' - FAILED')
+                
+        return result
+                                                           
     except:
-        print("Use Case cant be checked")
-                 
+        return "ERROR"
         
+                
 def ui_change_use_case(pos, tot, uc_step_count):
     
     try:
         
         URL = "https://qa-sandbox.apps.htec.rs/use-cases"
         firefox.get(URL)
+        time.sleep(2)
         
         if tot == 1:
             uc_xpath = '/html/body/div/div/div[2]/div/div/a'
@@ -292,16 +314,60 @@ def ui_del_uc(num_to_del):
             break
         
 
+def ui_check_uc_del():
+        
+    try:  
+        
+        URL = "https://qa-sandbox.apps.htec.rs/use-cases"
+        firefox.get(URL)
+        time.sleep(2)
+        
+        UC_XPATH = '/html/body/div/div/div[2]/div/div/a'        
+        checkElement = firefox.find_elements_by_xpath(UC_XPATH)
+       
+        if len(checkElement):
+            print('Check Use Case deleted, Use Case exists - FAILED')
+            return "FAILED"
+        else:
+            print('Check Use Case deleted, Use Case doesnt exists- PASSED')
+            return "PASSED"
+        
+    except:
+        print('Cant check Use Case deleted')
+        return "ERROR"
+        
+
 def ui_start_uc_creating():
-    
+       
     try:
         
-        URL = "https://qa-sandbox.apps.htec.rs/create-usecase"
+        URL = "https://qa-sandbox.apps.htec.rs/dashboard"
         firefox.get(URL)
-    
+        
+        XPATH_UC = '/html/body/div/div/div[2]/div/div/div[2]/div[2]/div/a/div/span/img'
+        element = wait.until(EC.element_to_be_clickable((By.XPATH, XPATH_UC)))
+        element.click()
+
     except:
         print('Cant start Use Case creation')
-                       
+  
+
+def ui_check_uc_entered():
+    
+    try:    
+    
+        if firefox.current_url == 'https://qa-sandbox.apps.htec.rs/use-cases':
+            print('Check login - PASSED')
+            return 'PASSED'
+        
+        else:
+            print('Check login - FAILED')
+            return 'FAILED'
+    
+    except:
+        print('Cant check is Use Case entered')        
+        return 'ERROR'
+                     
     
 def ui_write_uc_title(uc_title_txt):
     
@@ -365,32 +431,44 @@ def ui_press_uc_submit():
 
 def ui_check_improper_uc():
     
+    result = []
+    
     TITLE_MISSING_XPATH = '/html/body/div/div/div[2]/div/div/div/form/div[1]/div'
     EXPECTED_MISSING_XPATH = '/html/body/div/div/div[2]/div/div/div/form/div[3]/div'
     STEP_MISSING = '/html/body/div/div/div[2]/div/div/div/form/div[5]/div/div/div'
     
     if firefox.current_url == 'https://qa-sandbox.apps.htec.rs/use-cases':
         print('Use Case created, imporeper login - FAILED')
+        return "FAILED"
         
     elif firefox.current_url == 'https://qa-sandbox.apps.htec.rs/create-usecase':
             
         try:
             if firefox.find_element_by_xpath(TITLE_MISSING_XPATH).is_displayed():
                 print('Check "Title is required" visible - PASSED')
+                result.append('Check "Title is required" visible - PASSED')
+                return "PASSED"
+            
         except:
             pass
         try:
             if firefox.find_element_by_xpath(EXPECTED_MISSING_XPATH).is_displayed():
                 print('Check "Expected result is required" visible - PASSED')
+                result.append('Check "Expected result is required" visible - PASSED')
+                return 'PASSED'
+                
         except:
             pass
         try:
             if firefox.find_element_by_xpath(STEP_MISSING).is_displayed():
                 print('Check "There must be at least one test step" visible - PASSED')
+                result.append('Check "There must be at least one test step" visible - PASSED')
+                return 'PASSED'
+                
         except:
-            pass
+            return "ERORR"
     
-    
+
 def ui_logout():
     
     try:
@@ -409,12 +487,15 @@ def ui_check_logout():
         
         if firefox.current_url == 'https://qa-sandbox.apps.htec.rs/':
             print('Logout successful - PASSED')
+            return 'PASSED'
         
         else:
             print('Logout unsuccessful - FAILED')
+            return 'FAILED'
     
     except:
         print('Cant check logout')    
+        return 'ERROR'
     
 
  
