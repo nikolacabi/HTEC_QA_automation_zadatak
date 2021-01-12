@@ -67,11 +67,11 @@ def api_add_technologies(token, tech_title):
         'accept': "application/json, text/plain, */*",
         'authorization': "Bearer " + token,
         'content-type': "application/json;charset=utf-8",
-        'content-length': str(23 + len(tech_title)),
+        #'content-length': str(23 + len(tech_title)),
         'cache-control': "no-cache",
         }
     
-    response = requests.request("POST", url, data=payload, headers=headers)
+    response = requests.request("POST", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response    
@@ -121,7 +121,7 @@ def api_change_technologies(token, tech_id, tech_title):
         'cache-control': "no-cache",
         }
     
-    response = requests.request("PUT", url, data=payload, headers=headers)
+    response = requests.request("PUT", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response
@@ -158,7 +158,7 @@ def api_add_seniorities(token, sen_title):
         'cache-control': "no-cache",
         }
     
-    response = requests.request("POST", url, data=payload, headers=headers)
+    response = requests.request("POST", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response    
@@ -246,7 +246,7 @@ def api_add_teams(token, team_title):
         'cache-control': "no-cache",
         }
     
-    response = requests.request("POST", url, data=payload, headers=headers)
+    response = requests.request("POST", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response    
@@ -296,7 +296,7 @@ def api_change_teams(token, team_id, team_title):
         'cache-control': "no-cache",
         }
     
-    response = requests.request("PUT", url, data=payload, headers=headers)
+    response = requests.request("PUT", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response
@@ -326,23 +326,24 @@ def api_add_people(token, people_name, sen='', technologies=[], role=''):
     url = "https://qa-sandbox.apps.htec.rs/api/people/person"
     
     if sen=='' and role=='':
+        
         payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + "}"
-        req_len = len(name) + len(str(technologies)) + 39
+        req_len = len(people_name) + len(str(technologies)) + 39
         
     elif sen=='' and role!='':
-        
+
         payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}" 
-        req_len = len(name) + len(str(technologies)) + 53
+        req_len = len(people_name) + len(str(technologies)) + 53
     
     elif sen!='' and role=='':
         
         payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + "}"      
-        req_len = len(name) + len(str(technologies)) + 58
+        req_len = len(people_name) + len(str(technologies)) + 58
                 
     else:
         
         payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}"
-        req_len = len(name) + len(str(technologies)) + 73
+        req_len = len(people_name) + len(str(technologies)) + 73
                 
     headers = {
         'accept': "application/json, text/plain, */*",
@@ -352,7 +353,7 @@ def api_add_people(token, people_name, sen='', technologies=[], role=''):
         'cache-control': "no-cache",
         }
     
-    response = requests.request("POST", url, data=payload, headers=headers)
+    response = requests.request("POST", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response    
@@ -397,32 +398,32 @@ def api_change_people(token, people_id, people_name, sen='', technologies=[], ro
     
     if sen=='' and role=='':
         payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + "}"
-        req_len = len(name) + len(str(technologies)) + 39
+        req_len = len(people_name) + len(str(technologies)) + 39
         
     elif sen=='' and role!='':
         
         payload = "{\"people_name\":\"" + people_name + "\",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}" 
-        req_len = len(name) + len(str(technologies)) + 53
+        req_len = len(people_name) + len(str(technologies)) + 53
     
     elif sen!='' and role=='':
         
         payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + "}"      
-        req_len = len(name) + len(str(technologies)) + 58
+        req_len = len(people_name) + len(str(technologies)) + 58
                 
     else:
         
         payload = "{\"people_name\":\"" + people_name + "\",\"seniority_id\":" + str(sen) + ",\"technologies\":" + str(technologies) + ",\"role_id\":" + str(role) + "}"
-        req_len = len(name) + len(str(technologies)) + 73
+        req_len = len(people_name) + len(str(technologies)) + 73
                 
     headers = {
         'accept': "application/json, text/plain, */*",
         'authorization': "Bearer " + token,
         'content-type': "application/json;charset=utf-8",
-        'content-length': str(16 + req_len),
+        #'content-length': str(16 + req_len),
         'cache-control': "no-cache",
         }
     
-    response = requests.request("PUT", url, data=payload, headers=headers)
+    response = requests.request("PUT", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response   
@@ -457,7 +458,7 @@ def api_add_projects(token, project_title, people=[]):
         'cache-control': "no-cache",
         }
     
-    response = requests.request("POST", url, data=payload, headers=headers)
+    response = requests.request("POST", url, data=payload.encode('utf-8'), headers=headers)
     
     #print(response.text)
     return response   
@@ -475,7 +476,7 @@ def api_change_projects(token, project_id, project_title, people=[]):
         }
     
     try:
-        response = requests.request("PUT", url, data=payload, headers=headers)
+        response = requests.request("PUT", url, data=payload.encode('utf-8'), headers=headers)
         
         #print(response.text)
         return response   

@@ -3,6 +3,11 @@
 Created on Mon Jan 11 00:39:56 2021
 
 @author: Nikola
+
+Scenario from https://qa-sandbox.apps.htec.rs/exam lietaley covered with ui tests
+Each point from scenario is treated as test case and is implemented as functions with no attributes.
+
+
 """
 
 import time
@@ -62,12 +67,13 @@ def TC4_Edit_all_input_fields():
     
     return ui_test_functions.ui_check_use_case(1, 4, "This field previously had 10 characters", "This field previously had 13 characters", "This field previously had 10 characters", "false", 4, ["This field previously had 6 characters", "This field previously had 6 characters", "This field previously had 6 characters", "This field previously had 6 characters"])   
     
+
+
 # =============================================================================
 # MAIN
 # =============================================================================
-
-result = {}
-result['TC1_Login'] = TC1_Login()
-result["TC2_open_Use_Case"] = TC2_open_Use_Case()
-result["TC3_Create_4_Use_Cases"] = TC3_Create_4_Use_Cases()
-result["TC4_Edit_all_input_fields"] = TC4_Edit_all_input_fields()
+scenario_test_run = {}
+scenario_test_run['TC1_Login'] = TC1_Login()
+scenario_test_run["TC2_open_Use_Case"] = TC2_open_Use_Case()
+scenario_test_run["TC3_Create_4_Use_Cases"] = TC3_Create_4_Use_Cases()
+scenario_test_run["TC4_Edit_all_input_fields"] = TC4_Edit_all_input_fields()
