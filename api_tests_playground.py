@@ -19,6 +19,7 @@ def Clean_up():
     api_test_functions.api_delete_all_people(token)
     api_test_functions.api_delete_all_teams(token)
     api_test_functions.api_delete_all_projects(token)
+    api_test_functions.api_delete_all_use_cases(token)
 
 
 # =============================================================================
@@ -1079,11 +1080,11 @@ def TC33_Create_existing_Projects():
         return "ERROR" 
 
 
-def TC34_Multiple_Logins():
+def TC34_Multiple_Login_atempts():
         
     try:
         for i in range (0, 11):
-            api_test_functions.api_login('nikolacabi@yahoo.com', 'HTEC2021')
+            api_test_functions.api_login('nikolacabi@yahoo.com', str(random.randint(100000, 999999)))
              
         response = json.loads(api_test_functions.api_login('nikolacabi@yahoo.com', 'HTEC2021').text)  
         if response['success'] == True:
@@ -1094,59 +1095,4 @@ def TC34_Multiple_Logins():
         return "ERROR"    
     
 
-# =============================================================================
-# MAIN
-# =============================================================================
 
-if __name__ == "__main__":
-    
-    Clean_up()
-
-    api_test_run = {}
-    
-# =============================================================================
-#     api_test_run['TC1_Login'] = TC1_Proper_login()
-#     api_test_run['TC2_Improper_login_password'] = TC2_Improper_login_password()
-#     api_test_run['TC3_Improper_login_email'] = TC3_Improper_login_email() 
-#     
-#     api_test_run['TC4_Create_technologies_valid'] = TC4_Create_technologies_valid() 
-#     api_test_run['TC5_Create_technologies_invalid'] = TC5_Create_technologies_invalid() 
-#     api_test_run['TC6_Update_technologies'] = TC6_Update_technologies() 
-#     api_test_run['TC7_Create_existing_technologies'] = TC7_Create_existing_technologies() 
-#     
-#     api_test_run['TC8_Create_seniorities_valid'] = TC8_Create_seniorities_valid() 
-#     api_test_run['TC9_Create_seniorities_invalid'] = TC9_Create_seniorities_invalid() 
-#     api_test_run['TC10_Update_seniorities'] = TC10_Update_seniorities() 
-#     api_test_run['TC11_Create_existing_seniorities'] = TC11_Create_existing_seniorities() 
-#     
-#     api_test_run['TC12_Create_teams_valid'] = TC12_Create_teams_valid() 
-#     api_test_run['TC13_Create_teams_invalid'] = TC13_Create_teams_invalid() 
-#     api_test_run['TC14_Update_teams'] = TC14_Update_teams() 
-#     api_test_run['TC15_Create_existing_teams'] = TC15_Create_existing_teams() 
-# =============================================================================
-
-# =============================================================================
-#     api_test_run["TC16_Create_people_valid_name"] = TC16_Create_people_valid_name()
-#     api_test_run['TC17_Create_people_other_fields'] = TC17_Create_people_other_fields()
-#     api_test_run['TC18_Create_people_invalid_name'] = TC18_Create_people_invalid_name()
-#     api_test_run['TC19_Create_people_invalid_fields'] = TC19_Create_people_invalid_fields()
-#     api_test_run['TC20_Update_people_existing_fields'] = TC20_Update_people_existing_fields()
-#     api_test_run['TC21_Update_people_add_fields'] = TC21_Update_people_add_fields()
-#     api_test_run['TC22_Update_people_remove_fields'] = TC22_Update_people_remove_fields()
-#     api_test_run['TC23_Create_existing_people'] = TC23_Create_existing_people()
-#     api_test_run['TC24_Delete_team_from_people()'] = TC24_Delete_team_from_people()()
-#     api_test_run['TC25_Delete_seniorities_from_people'] = TC25_Delete_seniorities_from_people()
-#     api_test_run['TC26_Delete_1_technologies_from_people'] = TC26_Delete_1_technologies_from_people()
-#     api_test_run['TC27_Delete_seniorities_from_people'] = TC27_Delete_seniorities_from_people()
-# =============================================================================
-
-# =============================================================================
-#     api_test_run['TC28_Create_Projects_valid'] = TC28_Create_Projects_valid()
-#     api_test_run['TC29_Create_Projects_add_people'] = TC29_Create_Projects_add_people()
-#     api_test_run['TC30_Create_Projects_invalid'] = TC30_Create_Projects_invalid()
-#     api_test_run['TC31_Create_Projects_add_ivalid_people'] = TC31_Create_Projects_add_ivalid_people()
-#     api_test_run['TC32_Update_Projects'] = TC32_Update_Projects()
-#     api_test_run['TC33_Create_existing_Projects'] = TC33_Create_existing_Projects()
-# =============================================================================
-
-    api_test_run['TC34_Multiple_Logins'] = TC34_Multiple_Logins()

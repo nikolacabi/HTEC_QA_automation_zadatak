@@ -1,0 +1,13 @@
+Test Case / Result
+TC1_Proper_login_UI - PASSED
+TC2_Create_Use_Case_missing_title - PASSED
+TC3_Create_Use_Case_title_empty_space - PASSED
+TC4_Create_Use_Case_title_too_short - PASSED
+TC5_Create_Use_Case_missing_expected_result - PASSED
+TC6_Create_Use_Case_expected_empty_space - PASSED
+TC7_Create_Use_Case_expected_too_short - PASSED
+TC8_Create_Use_Case_missing_step - PASSED
+TC9_Create_Use_Case_step_empty_space - FAILED
+TC10_Use_Case_edge_cases - ['Check Title outside - PASSED', 'Check Title inside - PASSED', 'Check Description  - PASSED', 'Check Expected - PASSED', 'Check Automated? - PASSED', 'Check Step 1 - PASSED']
+TC11_Logout - PASSED
+TC12_Multiple_Login_atempts - FAILED

@@ -341,11 +341,11 @@ def ui_start_uc_creating():
        
     try:
         
-        URL = "https://qa-sandbox.apps.htec.rs/dashboard"
+        URL = "https://qa-sandbox.apps.htec.rs/use-cases"
         firefox.get(URL)
         
-        XPATH_UC = '/html/body/div/div/div[2]/div/div/div[2]/div[2]/div/a/div/span/img'
-        element = wait.until(EC.element_to_be_clickable((By.XPATH, XPATH_UC)))
+        XPATH_CREATE = '/html/body/div/div/div[2]/div/a[2]'
+        element = wait.until(EC.element_to_be_clickable((By.XPATH, XPATH_CREATE)))
         element.click()
 
     except:

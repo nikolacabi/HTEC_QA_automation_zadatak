@@ -518,23 +518,60 @@ def api_delete_projects(token, project_id):
     return response
 
 
+# =============================================================================
+# USE CASES
+# =============================================================================
+def api_get_all_use_cases(token):
+
+    url = "https://qa-sandbox.apps.htec.rs/api/usecases/all"
+    
+    headers = {
+        'authorization': "Bearer " + token,
+        'cache-control': "no-cache",    
+        'accept': "application/json, text/plain, */*",
+        }
+    
+    response = requests.request("GET", url, headers=headers)
+    
+    #print(response.text)
+    return response
 
 
+def api_delete_all_use_cases(token):
+    
+    if api_get_all_use_cases(token).text != "":
+    
+        all_use_cases = json.loads(api_get_all_use_cases(token).text)
+        
+        for i in range(0, len(all_use_cases)):
+            
+            use_case_id = all_use_cases[i]["usecase_id"]
+            
+            url = "https://qa-sandbox.apps.htec.rs/api/usecases/usecase/" + str(use_case_id)
+            
+            headers = {
+                'authorization': "Bearer " + token,
+                'cache-control': "no-cache",
+                }
+            
+            response = requests.request("DELETE", url, headers=headers)
 
 
 # =============================================================================
-# MAIN
+# # =============================================================================
+# # MAIN
+# # =============================================================================
+# token = json.loads(api_login('nikolacabi@yahoo.com', 'HTEC2021').text)["token"]
+# 
+# api_add_technologies(token, "tech5652")
+# all_tech = json.loads(api_get_all_technologies(token).text)
+# #api_delete_all_technologies(token)
+# 
+# api_add_seniorities(token, "tech5652")
+# all_sen = json.loads(api_get_all_seniorities(token).text)
+# #api_delete_all_seniorities(token)
+# 
+# api_add_teams(token, "Team43")
+# all_teams = json.loads(api_get_all_teams(token).text)
+# #api_delete_all_teams(token)
 # =============================================================================
-token = json.loads(api_login('nikolacabi@yahoo.com', 'HTEC2021').text)["token"]
-
-api_add_technologies(token, "tech5652")
-all_tech = json.loads(api_get_all_technologies(token).text)
-#api_delete_all_technologies(token)
-
-api_add_seniorities(token, "tech5652")
-all_sen = json.loads(api_get_all_seniorities(token).text)
-#api_delete_all_seniorities(token)
-
-api_add_teams(token, "Team43")
-all_teams = json.loads(api_get_all_teams(token).text)
-#api_delete_all_teams(token)
