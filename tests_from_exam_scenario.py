@@ -72,8 +72,11 @@ def TC4_Edit_all_input_fields():
 # =============================================================================
 # MAIN
 # =============================================================================
-scenario_test_run = {}
-scenario_test_run['TC1_Login'] = TC1_Login()
-scenario_test_run["TC2_open_Use_Case"] = TC2_open_Use_Case()
-scenario_test_run["TC3_Create_4_Use_Cases"] = TC3_Create_4_Use_Cases()
-scenario_test_run["TC4_Edit_all_input_fields"] = TC4_Edit_all_input_fields()
+
+if __name__ == "__main__":
+    
+    scenario_test_run = {}
+    scenario_test_run['TC1_Login'] = TC1_Login()
+    scenario_test_run["TC2_open_Use_Case"] = TC2_open_Use_Case()
+    scenario_test_run["TC3_Create_4_Use_Cases"] = TC3_Create_4_Use_Cases()
+    scenario_test_run["TC4_Edit_all_input_fields"] = TC4_Edit_all_input_fields()
